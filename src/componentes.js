@@ -1,18 +1,35 @@
 import React from 'react'
-import { Text,  View, TouchableOpacity } from 'react-native'
+import { Text,  View, TouchableOpacity, Button, Image } from 'react-native'
 
-import style from '../Styles/styles.js'
+import {styles} from '../Styles/styles.js'
 
-export default function BtnAnotation (prop)
+
+export function BtnAnotation (props)
 {
     return(
-        <TouchableOpacity style={style.viewBotao}>
-            <View style={style.viewTitulo}>
-                <Text style={style.txtTitulo}>{prop.titulo}</Text>
+        <TouchableOpacity style={styles.viewBotao}>
+            <View style={styles.viewTitulo}>
+                <Text style={styles.txtTitulo}>{props.titulo}</Text>
             </View>
-            <View style={style.viewConteudo}>
-                <Text style={style.txtConteudo}>{prop.text}</Text>
+            <View style={styles.viewConteudo}>
+                <Text style={styles.txtConteudo}>{props.text}</Text>
             </View>
         </TouchableOpacity>
+    )
+}
+
+export function TopBar (props)
+{
+    return(
+        <View style={styles.viewBarrasuperior}>
+            <Text style={styles.textTituloApp}>ANOTAPP</Text>
+        </View>
+    )
+}
+
+export function BtnAdd (props)
+{
+    return(
+        <TouchableOpacity style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
     )
 }

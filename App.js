@@ -6,12 +6,12 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import { SafeAreaView, View, StatusBar, Text, SectionList } from 'react-native';
+import React from 'react'
+import { SafeAreaView, View, StatusBar, Text, SectionList } from 'react-native'
 
-import styles from './Styles/styles.js'
+import {styles} from './Styles/styles.js'
 
-import BtnAnotation from './src/componentes.js'
+import {BtnAnotation, TopBar, BtnAdd} from './src/componentes.js'
 
 //SectionList temos as seguintes propriedades:
 //item: retorna o objeto somente com o nome 'data' de uma posição do Array
@@ -64,10 +64,8 @@ const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.viewMain}>
-        <View style={styles.viewBarrasuperior}>
-          <Text style={styles.textTituloApp}>ANOTAPP</Text>
-          </View>
+      <SafeAreaView style={styles.viewMain}> 
+          <TopBar />
           <View style={styles.viewCentral}>
             <SectionList
               sections = {DATA}
@@ -75,6 +73,7 @@ const App: () => React$Node = () => {
               renderItem = {({section}) => <BtnAnotation titulo = {section['title']}  text = {section['data']} />}
             />
           </View>
+          <BtnAdd />
       </SafeAreaView>
     </>
   );
