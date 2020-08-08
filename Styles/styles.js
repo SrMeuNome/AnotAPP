@@ -83,12 +83,56 @@ export const styles = StyleSheet.create({
         height: Dimensions.get('window').height*0.1,
         backgroundColor: '#5555ff',
         borderRadius: 50,
-        top: Dimensions.get('window').height * 0.857,
-        left: Dimensions.get('window').width * 0.82
+        top: Dimensions.get('window').height * 0.79,
+        left: Dimensions.get('window').width * 0.8
     },
     imgPlus:
     {
         width: Dimensions.get('window').height*0.06,
         height: Dimensions.get('window').height*0.06
+    },
+    viewImgSave:
+    {
+        justifyContent: 'center',
+        alignItems: "center",
+        alignSelf: 'flex-end',
+        position: "absolute",
+        width: Dimensions.get('window').height*0.1,
+        height: Dimensions.get('window').height*0.1,
+        backgroundColor: '#5555ff',
+        borderRadius: 50,
+        top: Dimensions.get('window').height * 0.79,
+        left: Dimensions.get('window').width * 0.8
+    },
+    imgSave:
+    {
+        width: Dimensions.get('window').height*0.055,
+        height: Dimensions.get('window').height*0.055
+    },
+    inputTitulo:
+    {
+        alignSelf: 'center',
+        width: Dimensions.get('window').width*0.95,
+        height: Dimensions.get('window').height*0.06,
+        backgroundColor: 'white',
+        borderColor: '#5555ff',
+        borderStyle: 'solid',
+        borderRadius: 10,
+        borderWidth: 3,
+        marginTop: Dimensions.get('window').height*0.01,
+        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03
+    },
+    inputConteudo:
+    {
+        alignSelf: 'center',
+        width: Dimensions.get('window').width*0.95,
+        height: Dimensions.get('window').height*0.5,
+        backgroundColor: 'white',
+        borderColor: '#5555ff',
+        borderStyle: 'solid',
+        borderRadius: 10,
+        borderWidth: 3,
+        marginTop: Dimensions.get('window').height*0.01,
+        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03
     }
 })

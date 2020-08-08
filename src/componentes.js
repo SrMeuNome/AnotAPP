@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text,  View, TouchableOpacity, Button, Image } from 'react-native'
 
-import {styles} from '../Styles/styles.js'
+import {styles} from '../styles/styles.js'
 
 
 export function BtnAnotation (props)
@@ -30,6 +30,13 @@ export function TopBar (props)
 export function BtnAdd (props)
 {
     return(
-        <TouchableOpacity style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
+        <TouchableOpacity onPress = {() => props.navigation.navigate('Anotation')} style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
+    )
+}
+
+export function BtnSalve (props)
+{
+    return(
+        <TouchableOpacity style={styles.viewImgSave}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
     )
 }
