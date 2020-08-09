@@ -10,7 +10,7 @@ import 'react-native-gesture-handler';
 import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, TransitionSpecs } from '@react-navigation/stack'
 
 import { Home } from './screens/home.js'
 import { AnotationScreen } from './screens/anotationScreen.js'
@@ -23,8 +23,8 @@ const App: () => React$Node = () => {
     <>
       <NavigationContainer>
         <Stack.Navigator initialRouteName = "Home" >
-          <Stack.Screen name = "Home" component =  { Home } options = {{header: props => <TopBar {...props} />}}/>
-          <Stack.Screen name = "Anotation" component = { AnotationScreen } options = {{header: props => <TopBar {...props} />}} />
+          <Stack.Screen name = "Home" component =  { Home } options = {{header: props => <TopBar {...props} />, animationEnabled: false}}/>
+          <Stack.Screen name = "Anotation" component = { AnotationScreen } options = {{header: props => <TopBar {...props} />, animationEnabled: false}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

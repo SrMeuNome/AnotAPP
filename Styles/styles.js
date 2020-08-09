@@ -120,7 +120,9 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 3,
         marginTop: Dimensions.get('window').height*0.01,
-        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03
+        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03,
+        paddingBottom: (Dimensions.get('window').width*0.95) * 0.02,
+        fontSize: 20
     },
     inputConteudo:
     {
@@ -133,6 +135,7 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 3,
         marginTop: Dimensions.get('window').height*0.01,
-        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03
+        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03,
+        fontSize: 18
     }
 })

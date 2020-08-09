@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text,  View, TouchableOpacity, Button, Image } from 'react-native'
 
 import {styles} from '../styles/styles.js'
@@ -30,13 +30,19 @@ export function TopBar (props)
 export function BtnAdd (props)
 {
     return(
-        <TouchableOpacity onPress = {() => props.navigation.navigate('Anotation')} style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
+        <TouchableOpacity onPress = {() => props.navigation.push('Anotation')} style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
     )
 }
 
-export function BtnSalve (props)
+export function BtnSalve (props, state)
 {
     return(
-        <TouchableOpacity style={styles.viewImgSave}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+        <TouchableOpacity style={styles.viewImgSave} onPress = {() => Salve(props.titulo, props.conteudo, props.navigation, {...state})}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
     )
+}
+
+function Salve(titulo, conteudo, navigation)
+{
+    //setStateData({title: titulo, data: [conteudo]})
+    navigation.goBack()
 }
