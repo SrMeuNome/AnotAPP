@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
 
-import React, { Component } from 'react'
-import { SafeAreaView, View, StatusBar, SectionList, Text } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, View, StatusBar } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler';
 
 import {styles} from '../styles/styles.js'
 
@@ -14,57 +15,63 @@ const database_name = "anotapp.db";
 //const database_displayname = "SQLite Database";
 //const database_size = 200000;
 
-let db = DataBase.CreateDB(database_name)
-
-DataBase.CreateTables(db)
-
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo', 'Teste Conteudo');`, db)
-
-var rowsDB = DataBase.GetQuery(`SELECT JSON_OBJECT('title', a.title_anotation, 'text', a.text_anotation) AS data FROM anotation a;`, db)
-
-const DATA = []
-
-for (let i = 0; i < rowsDB.length; i++)
-{
-  let jssonData = JSON.parse(rowsDB[0])
-  console.log(jsonData.title)
-  DATA.push({title: jssonData.title, data: [jssonData.text]})
-}
-
-//SectionList temos as seguintes propriedades:
+//FlatList temos as seguintes propriedades:
 //item: retorna o objeto somente com o nome 'data' de uma posição do Array
 //index: retorna o index do Array
 //section: retorna o objeto completo em uma posição do Array
 
-//Partes principais de uma SectionList
-//sections : Array com os dados
-//keyExtractor: o id de cada item
-//renderItem: os itens que vão renderizar
-//{...} serve para herdar propriedades do pai
+var db = DataBase.CreateDB(database_name)
 
-export class Home extends Component
+DataBase.CreateTables(db)
+/*DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 1', 'Teste Conteudo 1');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 2', 'Teste Conteudo 2');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 3', 'Teste Conteudo 3');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 4', 'Teste Conteudo 4');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 5', 'Teste Conteudo 5');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 6', 'Teste Conteudo 6');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 7', 'Teste Conteudo 7');`, db)
+DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 8', 'Teste Conteudo 8');`, db)*/
+
+export const Home = (props) =>
 {
+  let [data, setDATA] = useState([])
 
-  state = {
-    Value: DATA
-  }
-  render()
+  //Executando select
+  db.transaction( (tx) => { tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) =>
   {
-    return(
-      <>
-          <StatusBar barStyle="dark-content" />
-          <SafeAreaView style={styles.viewMain}> 
-            <View style={styles.viewCentral}>
-              <SectionList
-                  sections = {this.state.Value}
-                  keyExtractor = {(item, index) => item + index}
-                  renderItem = {({section}) => <BtnAnotation titulo = {section['title']}  text = {section['data']} />}
-              />
-              <Text>Teste: {rowsDB[0]}</Text>
-            </View>
-            <BtnAdd {...this.props} {...this.state} />
-          </SafeAreaView>
-      </>
-    )
-  }
+        let len = results.rows.length
+        let row = []
+        console.log('Inicio')
+        for (let i = 0; i < len; i++)
+        {
+            row.push(results.rows.item(i))
+        }
+        console.log('Primeiro for: ' + row[0])
+
+        setDATA(row)
+        console.log('Resoltado final: ' + data[0]['id_anotation'])
+    },
+    (err) => {
+        console.log("error: ",err);
+        //console.log("Error: "+ (err.message || err));
+        return false;
+    })})
+
+    DataBase.CloseDB(db)
+
+  return(
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={styles.viewMain}> 
+        <View style={styles.viewCentral}>
+          <FlatList
+            data = {data}
+            keyExtractor = {(item, index) => item['id_anotation'] + index}
+            renderItem = {({item}) => <BtnAnotation title = {item['title_anotation']}  text = {item['text_anotation']} />}
+          />
+        </View>
+        <BtnAdd {...props}/>
+      </SafeAreaView>
+    </>
+  )
 }

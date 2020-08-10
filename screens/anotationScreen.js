@@ -21,7 +21,7 @@ export class AnotationScreen extends Component
                 <SafeAreaView style={styles.viewMain}>
                     <TextInput onChangeText = {(text) => this.setState({titulo: text})} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
                     <TextInput onChangeText = {(text) => this.setState({conteudo: text})} multiline = {true} style = {styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
-                    <BtnSalve {...this.props} {...this.state} titulo = {this.state.titulo} conteudo = {this.state.conteudo} />
+                    <BtnSalve {...this.props} titulo = {this.state.titulo} conteudo = {this.state.conteudo} />
                 </SafeAreaView>
             </>
         )

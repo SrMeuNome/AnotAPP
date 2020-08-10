@@ -18,15 +18,15 @@ export default class DataBase
     static CreateTables = async (dataBase) =>
     {
         //Testes
-        dataBase.executeSql("DROP TABLE IF EXISTS anotation;")
+        //dataBase.transaction((tx) => {tx.executeSql("DROP TABLE IF EXISTS anotation;", [], () => console.log('Tabela deletada com sucesso'), () => console.log('Erro ao deletar tabela'))})
 
-        await dataBase.executeSql("CREATE TABLE IF NOT EXISTS anotation ("
+        dataBase.transaction((tx) => {tx.executeSql("CREATE TABLE IF NOT EXISTS anotation ("
         + "id_anotation INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
         + " title_anotation VARCHAR(100),"
         + " text_anotation VARCHAR(500) NOT NULL);", [], () => console.log('Table create with sucess'), (err) =>{
             console.log("error: ",err);
             //console.log("Error: "+ (err.message || err));
-            return false;})
+            return false;})})
     }
 
     static CloseDB = async (db) =>
@@ -39,30 +39,30 @@ export default class DataBase
 
     static InsertDB = async (sql, dataBase) =>
     {
-        await dataBase.executeSql(sql, [], () => console.log('DB Insert with sucess'), (err) =>{
+        await dataBase.transaction((tx) => {tx.executeSql(sql, [], () => console.log('DB Insert with sucess'), (err) =>{
             console.log("error: ",err);
             //console.log("Error: "+ (err.message || err));
-            return false;})
+            return false;})})
     }
 
     static GetQuery = async (query, dataBase) =>
     {
-        const response = await dataBase.executeSql(query, [], (results) => {
+        return await dataBase.transaction((tx) => { return tx.executeSql(query, [], (tx, results) =>
+        {
             var len = results.rows.length
             var rows = []
             for (let i = 0; i < len; i++)
             {
                 rows.push(results.rows.item(i).data)
-            } 
-            console.log(rows[0])
+            }
+            console.log(rows)
             return rows
         },
-            (err) => {
+        (err) => {
             console.log("error: ",err);
             //console.log("Error: "+ (err.message || err));
             return false;
-            })
-        
-        return response
+        })})
     }
+
 }
