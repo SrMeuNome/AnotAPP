@@ -44,6 +44,13 @@ export function BtnSalve (props)
     )
 }
 
+export function BtnUpdate (props)
+{
+    return(
+        <TouchableOpacity style={styles.viewImgSave} onPress = {() => Update(props.id, props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+    )
+}
+
 function Salve(titulo, conteudo, navigation)
 {
     const database_name = "anotapp.db";
@@ -72,5 +79,31 @@ function Salve(titulo, conteudo, navigation)
 
 function Edit(titulo, conteudo, id, navigation)
 {
-    navigation.navigate('Edition', {tituloEdit: titulo, conteudoEdit: conteudo})
+    navigation.navigate('Edition', {tituloEdit: titulo, conteudoEdit: conteudo, idEdit: id})
+}
+
+function Update(id, titulo, conteudo, navigation)
+{
+    const database_name = "anotapp.db";
+    //const database_version = "1.0";
+    //const database_displayname = "SQLite Database";
+    //const database_size = 200000;
+
+    var db
+
+    if(conteudo.length > 0)
+    {
+        db = DataBase.CreateDB(database_name)
+        DataBase.InsertDB(`UPDATE anotation SET id_anotation ${id}, title_anotation = ${titulo}, text_anotation = ${conteudo} WHERE id_anotation = ${id};`, db)
+        //DataBase.CloseDB(db)
+        //navigation.goBack()
+        navigation.navigate('Home')
+    }
+    else
+    {
+        //mensagem de erro
+        alert('Você deve colocar pelo algum conteúdo antes de salvar!')
+    }
+    //setStateData({title: titulo, data: [conteudo]})
+    
 }

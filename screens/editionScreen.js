@@ -12,9 +12,11 @@ export const EdtiScreen = (props) =>
 {
     const { tituloEdit } = props.route.params
     const { conteudoEdit } = props.route.params
+    const { idEdit } = props.route.params
 
     let [titulo, setTitulo] = useState(tituloEdit)
     let [coneudo, setConteudo] = useState(conteudoEdit)
+    let [id, setId] = useState(idEdit)
 
   
     return(
@@ -23,7 +25,7 @@ export const EdtiScreen = (props) =>
             <SafeAreaView style={styles.viewMain}>
                 <TextInput value = {tituloEdit} onChangeText = {(text) => setTitulo(text)} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
                 <TextInput value = {conteudoEdit} onChangeText = {(text) => setConteudo(text)} multiline = {true} style = {styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
-                <BtnSalve {...props} titulo = {props.titulo} conteudo = {props.conteudo} />
+                <BtnUpdate {...props} titulo = {titulo} conteudo = {conteudo} id = {id} />
             </SafeAreaView>
         </>
     )
