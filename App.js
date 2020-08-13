@@ -14,6 +14,7 @@ import { createStackNavigator, TransitionSpecs } from '@react-navigation/stack'
 
 import { Home } from './screens/home.js'
 import { AnotationScreen } from './screens/anotationScreen.js'
+import { EdtiScreen } from './screens/editionScreen.js'
 import { TopBar } from './src/componentes.js'
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const App: () => React$Node = () => {
         <Stack.Navigator initialRouteName = "Home" >
           <Stack.Screen name = "Home" component =  { Home } options = {{header: props => <TopBar {...props} />, animationEnabled: false}}/>
           <Stack.Screen name = "Anotation" component = { AnotationScreen } options = {{header: props => <TopBar {...props} />, animationEnabled: false}} />
+          <Stack.Screen name = "Edition" component = { EdtiScreen } options = {{header: props => <TopBar {...props} />, animationEnabled: false}} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

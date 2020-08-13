@@ -1,15 +1,16 @@
 import React from 'react'
-import { Text,  View, TouchableOpacity, Button, Image } from 'react-native'
+import { Text,  View, TouchableOpacity, Button, Image, Alert } from 'react-native'
 
 import {styles} from '../styles/styles.js'
 
 import DataBase from '../db/controle.js'
+import { EdtiScreen } from '../screens/editionScreen.js'
 
 
 export function BtnAnotation (props)
 {
     return(
-        <TouchableOpacity style={styles.viewBotao}>
+        <TouchableOpacity style={styles.viewBotao} onPress= {() => {Edit(props.title, props.text, props.navigation)}}>
             <View style={styles.viewTitulo}>
                 <Text style={styles.txtTitulo}>{props.title}</Text>
             </View>
@@ -50,11 +51,26 @@ function Salve(titulo, conteudo, navigation)
     //const database_displayname = "SQLite Database";
     //const database_size = 200000;
 
-    var db = DataBase.CreateDB(database_name)
+    var db
 
-    DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('${titulo}', '${conteudo}');`, db)
-
-    DataBase.CloseDB(db)
+    if(conteudo.length > 0)
+    {
+        db = DataBase.CreateDB(database_name)
+        DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('${titulo}', '${conteudo}');`, db)
+        //DataBase.CloseDB(db)
+        //navigation.goBack()
+        navigation.navigate('Home')
+    }
+    else
+    {
+        //mensagem de erro
+        alert('Você deve colocar pelo algum conteúdo antes de salvar!')
+    }
     //setStateData({title: titulo, data: [conteudo]})
-    navigation.goBack()
+    
+}
+
+function Edit(titulo, conteudo, navigation)
+{
+    navigation.navigate('Edition', {tituloEdit: titulo, conteudoEdit: conteudo})
 }

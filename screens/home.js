@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 
-import React, { useState } from 'react'
-import { SafeAreaView, View, StatusBar } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { SafeAreaView, View, StatusBar, Text } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
 
 import {styles} from '../styles/styles.js'
@@ -23,41 +23,34 @@ const database_name = "anotapp.db";
 var db = DataBase.CreateDB(database_name)
 
 DataBase.CreateTables(db)
-/*DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 1', 'Teste Conteudo 1');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 2', 'Teste Conteudo 2');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 3', 'Teste Conteudo 3');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 4', 'Teste Conteudo 4');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 5', 'Teste Conteudo 5');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 6', 'Teste Conteudo 6');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 7', 'Teste Conteudo 7');`, db)
-DataBase.InsertDB(`INSERT INTO anotation(title_anotation, text_anotation) VALUES ('Teste Titulo 8', 'Teste Conteudo 8');`, db)*/
 
 export const Home = (props) =>
 {
   let [data, setDATA] = useState([])
-
   //Executando select
-  db.transaction( (tx) => { tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) =>
+  
+  useEffect( () => 
   {
-        let len = results.rows.length
-        let row = []
-        console.log('Inicio')
-        for (let i = 0; i < len; i++)
-        {
-            row.push(results.rows.item(i))
-        }
-        console.log('Primeiro for: ' + row[0])
-
-        setDATA(row)
-        console.log('Resoltado final: ' + data[0]['id_anotation'])
-    },
-    (err) => {
-        console.log("error: ",err);
-        //console.log("Error: "+ (err.message || err));
-        return false;
-    })})
-
-    DataBase.CloseDB(db)
+    db.transaction( (tx) => { tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) =>
+    {
+          let len = results.rows.length
+          console.log('Quantidade de linhas: ' + len)
+          let row = []
+          for (let i = 0; i < len; i++)
+          {
+              row.push(results.rows.item(i))
+          }
+          setDATA(row)
+          console.log('Query Complete!')
+      },
+      (err) => {
+          console.log("error: ",err);
+          //console.log("Error: "+ (err.message || err));
+          return false;
+      })
+    })
+  })
+      
 
   return(
     <>
@@ -66,9 +59,9 @@ export const Home = (props) =>
         <View style={styles.viewCentral}>
           <FlatList
             data = {data}
-            keyExtractor = {(item, index) => item['id_anotation'] + index}
-            renderItem = {({item}) => <BtnAnotation title = {item['title_anotation']}  text = {item['text_anotation']} />}
-          />
+            keyExtractor = {(item, index) => item['id_anotation'].toString()}
+            renderItem = {({item}) => <BtnAnotation {...props} title = {item['title_anotation']}  text = {item['text_anotation']} />}
+          />  
         </View>
         <BtnAdd {...props}/>
       </SafeAreaView>
