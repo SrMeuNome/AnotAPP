@@ -15,6 +15,12 @@ const database_name = "anotapp.db";
 //const database_displayname = "SQLite Database";
 //const database_size = 200000;
 
+//Tamanho maximo texto do titulo
+const maxLimitTitulo = 21
+
+//Tamanho maximo texto do conteúdo
+const maxLimitConteudo = 35
+
 //FlatList temos as seguintes propriedades:
 //item: retorna o objeto somente com o nome 'data' de uma posição do Array
 //index: retorna o index do Array
@@ -60,7 +66,12 @@ export const Home = (props) =>
           <FlatList
             data = {data}
             keyExtractor = {(item, index) => item['id_anotation'].toString()}
-            renderItem = {({item}) => <BtnAnotation {...props} title = {item['title_anotation']}  text = {item['text_anotation']} />}
+            renderItem = {({item}) => <BtnAnotation {...props}
+                                      title = {item['title_anotation'].length > maxLimitTitulo ? (item['title_anotation']).substring(0,maxLimitTitulo-3) + '...' : item['title_anotation']}
+                                      text = {item['text_anotation'].length > maxLimitConteudo ? (item['text_anotation']).substring(0,maxLimitConteudo-3) + '...' : item['text_anotation']}
+                                      titleComplete = {item['title_anotation']}
+                                      conteudoComplete = {item['text_anotation']}
+                                      idConteudo = {item['id_anotation']} />}
           />  
         </View>
         <BtnAdd {...props}/>

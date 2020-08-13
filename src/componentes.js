@@ -10,7 +10,7 @@ import { EdtiScreen } from '../screens/editionScreen.js'
 export function BtnAnotation (props)
 {
     return(
-        <TouchableOpacity style={styles.viewBotao} onPress= {() => {Edit(props.title, props.text, props.navigation)}}>
+        <TouchableOpacity style={styles.viewBotao} onPress= {() => {Edit(props.titleComplete, props.conteudoComplete, props.idConteudo, props.navigation)}}>
             <View style={styles.viewTitulo}>
                 <Text style={styles.txtTitulo}>{props.title}</Text>
             </View>
@@ -70,7 +70,7 @@ function Salve(titulo, conteudo, navigation)
     
 }
 
-function Edit(titulo, conteudo, navigation)
+function Edit(titulo, conteudo, id, navigation)
 {
     navigation.navigate('Edition', {tituloEdit: titulo, conteudoEdit: conteudo})
 }
