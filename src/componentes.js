@@ -32,14 +32,14 @@ export function TopBar (props)
 export function BtnAdd (props)
 {
     return(
-        <TouchableOpacity onPress = {() => props.navigation.push('Anotation')} style={styles.viewImgPlus}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
+        <TouchableOpacity onPress = {() => props.navigation.push('Anotation')} style={styles.viewImgRigth}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
     )
 }
 
 export function BtnSalve (props)
 {
     return(
-        <TouchableOpacity style={styles.viewImgSave} onPress = {() => Salve(props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+        <TouchableOpacity style={styles.viewImgRigth} onPress = {() => Salve(props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
     )
 }
 
@@ -50,13 +50,16 @@ export function BtnUpdate (props)
     if(isEdit)
     {
         return(
-            <TouchableOpacity style={styles.viewImgSave} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+            <>
+                <TouchableOpacity style={styles.viewImgRigth} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+                <TouchableOpacity style={styles.viewImgLeft} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgDelete} source={require('../img/delete.png')} /></TouchableOpacity>
+            </>
         )
     }
     else
     {
         return(
-            <TouchableOpacity style={styles.viewImgSave} onPress = {() => {/*Colocar a função de liberar os inputs*/; setIsEdit(true)}}><Image style={styles.imgSave} source={require('../img/plus.png') /*Depois trocar pelo caminho da imagem certa*/} /></TouchableOpacity>
+            <TouchableOpacity style={styles.viewImgRigth} onPress = {() => {/*Colocar a função de liberar os inputs*/; setIsEdit(true)}}><Image style={styles.imgEdit} source={require('../img/edit.png') /*Depois trocar pelo caminho da imagem certa*/} /></TouchableOpacity>
         )
     }
     

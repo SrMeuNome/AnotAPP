@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
         alignItems: "flex-start",
         paddingLeft: 10,
     },
-    viewImgPlus:
+    viewImgRigth:
     {
         justifyContent: 'center',
         alignItems: "center",
@@ -85,29 +85,39 @@ export const styles = StyleSheet.create({
         borderRadius: 50,
         top: Dimensions.get('window').height * 0.79,
         left: Dimensions.get('window').width * 0.8
+    },
+    viewImgLeft:
+    {
+        justifyContent: 'center',
+        alignItems: "center",
+        alignSelf: 'flex-end',
+        position: "absolute",
+        width: Dimensions.get('window').height*0.1,
+        height: Dimensions.get('window').height*0.1,
+        backgroundColor: '#5555ff',
+        borderRadius: 50,
+        top: Dimensions.get('window').height * 0.79,
+        right: Dimensions.get('window').width * 0.8
+    },
+    imgSave:
+    {
+        width: Dimensions.get('window').height*0.055,
+        height: Dimensions.get('window').height*0.055
     },
     imgPlus:
     {
         width: Dimensions.get('window').height*0.06,
         height: Dimensions.get('window').height*0.06
     },
-    viewImgSave:
+    imgDelete:
     {
-        justifyContent: 'center',
-        alignItems: "center",
-        alignSelf: 'flex-end',
-        position: "absolute",
-        width: Dimensions.get('window').height*0.1,
-        height: Dimensions.get('window').height*0.1,
-        backgroundColor: '#5555ff',
-        borderRadius: 50,
-        top: Dimensions.get('window').height * 0.79,
-        left: Dimensions.get('window').width * 0.8
+        width: Dimensions.get('window').height*0.05,
+        height: Dimensions.get('window').height*0.06
     },
-    imgSave:
+    imgEdit:
     {
-        width: Dimensions.get('window').height*0.055,
-        height: Dimensions.get('window').height*0.055
+        width: Dimensions.get('window').height*0.06,
+        height: Dimensions.get('window').height*0.06
     },
     inputTitulo:
     {
