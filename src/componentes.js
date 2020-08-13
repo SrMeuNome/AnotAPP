@@ -1,10 +1,9 @@
-import React from 'react'
-import { Text,  View, TouchableOpacity, Button, Image, Alert } from 'react-native'
+import React, { useState } from 'react'
+import { Text,  View, TouchableOpacity, Image } from 'react-native'
 
 import {styles} from '../styles/styles.js'
 
 import DataBase from '../db/controle.js'
-import { EdtiScreen } from '../screens/editionScreen.js'
 
 
 export function BtnAnotation (props)
@@ -46,9 +45,21 @@ export function BtnSalve (props)
 
 export function BtnUpdate (props)
 {
-    return(
-        <TouchableOpacity style={styles.viewImgSave} onPress = {() => Update(props.id, props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
-    )
+    let [isEdit, setIsEdit] = useState(false)
+
+    if(isEdit)
+    {
+        return(
+            <TouchableOpacity style={styles.viewImgSave} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+        )
+    }
+    else
+    {
+        return(
+            <TouchableOpacity style={styles.viewImgSave} onPress = {() => {/*Colocar a função de liberar os inputs*/; setIsEdit(true)}}><Image style={styles.imgSave} source={require('../img/plus.png') /*Depois trocar pelo caminho da imagem certa*/} /></TouchableOpacity>
+        )
+    }
+    
 }
 
 function Salve(titulo, conteudo, navigation)
@@ -94,7 +105,7 @@ function Update(id, titulo, conteudo, navigation)
     if(conteudo.length > 0)
     {
         db = DataBase.CreateDB(database_name)
-        DataBase.InsertDB(`UPDATE anotation SET id_anotation ${id}, title_anotation = ${titulo}, text_anotation = ${conteudo} WHERE id_anotation = ${id};`, db)
+        DataBase.InsertDB(`UPDATE anotation SET id_anotation = ${parseInt(id)}, title_anotation = "${titulo}", text_anotation = "${conteudo}" WHERE id_anotation = ${parseInt(id)};`, db)
         //DataBase.CloseDB(db)
         //navigation.goBack()
         navigation.navigate('Home')
