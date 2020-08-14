@@ -40,7 +40,6 @@ export const Home = (props) =>
     db.transaction( (tx) => { tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) =>
     {
           let len = results.rows.length
-          console.log('Quantidade de linhas: ' + len)
           let row = []
           for (let i = 0; i < len; i++)
           {

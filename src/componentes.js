@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text,  View, TouchableOpacity, Image } from 'react-native'
+import { Text,  View, TouchableOpacity, Image, Alert } from 'react-native'
 
 import {styles} from '../styles/styles.js'
 
@@ -11,10 +11,10 @@ export function BtnAnotation (props)
     return(
         <TouchableOpacity style={styles.viewBotao} onPress= {() => {Edit(props.titleComplete, props.conteudoComplete, props.idConteudo, props.navigation)}}>
             <View style={styles.viewTitulo}>
-                <Text style={styles.txtTitulo}>{props.title}</Text>
+                <Text numberOfLines = {1} style={styles.txtTitulo}>{props.title}</Text>
             </View>
             <View style={styles.viewConteudo}>
-                <Text style={styles.txtConteudo}>{props.text}</Text>
+                <Text numberOfLines = {2} style={styles.txtConteudo}>{props.text}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -52,14 +52,20 @@ export function BtnUpdate (props)
         return(
             <>
                 <TouchableOpacity style={styles.viewImgRigth} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
-                <TouchableOpacity style={styles.viewImgLeft} onPress = {() => {Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false)}}><Image style={styles.imgDelete} source={require('../img/delete.png')} /></TouchableOpacity>
+                <TouchableOpacity style={styles.viewImgLeft} onPress = {() => {Delete(props.idUp, props.navigation, (editable) => props.callback(editable)); setIsEdit(false)}}><Image style={styles.imgDelete} source={require('../img/delete.png')} /></TouchableOpacity>
             </>
         )
     }
     else
     {
         return(
-            <TouchableOpacity style={styles.viewImgRigth} onPress = {() => {/*Colocar a função de liberar os inputs*/; setIsEdit(true)}}><Image style={styles.imgEdit} source={require('../img/edit.png') /*Depois trocar pelo caminho da imagem certa*/} /></TouchableOpacity>
+            <>
+                <TouchableOpacity style={styles.viewImgRigth} onPress = {() => {
+                        setIsEdit(true)
+                        props.callback(true) //callback(isEdit)
+                }}><Image style={styles.imgEdit} source={require('../img/edit.png')} />
+                </TouchableOpacity>
+            </>
         )
     }
     
@@ -67,12 +73,12 @@ export function BtnUpdate (props)
 
 function Salve(titulo, conteudo, navigation)
 {
-    const database_name = "anotapp.db";
+    let database_name = "anotapp.db";
     //const database_version = "1.0";
     //const database_displayname = "SQLite Database";
     //const database_size = 200000;
 
-    var db
+    let db
 
     if(conteudo.length > 0)
     {
@@ -98,12 +104,12 @@ function Edit(titulo, conteudo, id, navigation)
 
 function Update(id, titulo, conteudo, navigation)
 {
-    const database_name = "anotapp.db";
+    let database_name = "anotapp.db";
     //const database_version = "1.0";
     //const database_displayname = "SQLite Database";
     //const database_size = 200000;
 
-    var db
+    let db
 
     if(conteudo.length > 0)
     {
@@ -120,4 +126,30 @@ function Update(id, titulo, conteudo, navigation)
     }
     //setStateData({title: titulo, data: [conteudo]})
     
+}
+
+function Delete(id, navigation, editable)
+{
+    let database_name = "anotapp.db";
+    //const database_version = "1.0";
+    //const database_displayname = "SQLite Database";
+    //const database_size = 200000;
+
+    let db
+
+    Alert.alert('Atenção:','Você tem certeza que deseja deletar esta anotação?',
+    [{
+        text: 'Cancelar',
+        onPress: () => {editable(false)},
+        style: "cancel",
+    },
+    {
+        text: 'Confirmar',
+        onPress: () => {
+            db = DataBase.CreateDB(database_name)
+            DataBase.InsertDB(`DELETE FROM anotation WHERE id_anotation = ${id}`, db)
+            navigation.navigate('Home')
+        },
+        style: "default"
+    }], { cancelable: false })
 }

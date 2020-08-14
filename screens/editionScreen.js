@@ -18,14 +18,16 @@ export const EdtiScreen = (props) =>
     let [conteudo, setConteudo] = useState(conteudoEdit)
     let [id, setId] = useState(idEdit)
 
+    let [isEdit, setIsEdit] = useState(false)
+
   
     return(
         <>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView style={styles.viewMain}>
-                <TextInput value = {titulo} onChangeText = {(text) => setTitulo(text)} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
-                <TextInput value = {conteudo} onChangeText = {(text) => setConteudo(text)} multiline = {true} style = {styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
-                <BtnUpdate {...props} tituloUp = {titulo} conteudoUp = {conteudo} idUp = {id} />
+                <TextInput editable = {isEdit} value = {titulo} onChangeText = {(text) => setTitulo(text)} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
+                <TextInput editable = {isEdit} value = {conteudo} onChangeText = {(text) => setConteudo(text)} multiline = {true} style = {styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
+                <BtnUpdate {...props} callback = {(isEdit) => setIsEdit(isEdit)} tituloUp = {titulo} conteudoUp = {conteudo} idUp = {id} />
             </SafeAreaView>
         </>
     )
