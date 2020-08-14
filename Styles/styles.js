@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     },
     txtTitulo:
     {
-        fontSize: 35,
+        fontSize: 30,
         color: 'black'
     },
     txtConteudo:
@@ -58,11 +58,11 @@ export const styles = StyleSheet.create({
     {
         width: Dimensions.get('window').width*0.9,
         height: (Dimensions.get('window').height*0.2) * 0.4,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: "flex-start",
         borderBottomWidth: 3,
         borderBottomColor: '#5555ff',
-        paddingTop: (Dimensions.get('window').height*0.2) * 0.1,
+        paddingTop: (Dimensions.get('window').height*0.2) * 0.05,
         paddingLeft: (Dimensions.get('window').width*0.9) * 0.01
     },
     viewConteudo:
