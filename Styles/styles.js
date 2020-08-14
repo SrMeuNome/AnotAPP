@@ -35,8 +35,8 @@ export const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: '#5555ff',
         flexDirection: 'column',
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: (Dimensions.get('window').height*0.2)*0.1,
+        marginBottom: (Dimensions.get('window').height*0.2)*0.1
     },
     txtTitulo:
     {
@@ -62,8 +62,8 @@ export const styles = StyleSheet.create({
         alignItems: "flex-start",
         borderBottomWidth: 3,
         borderBottomColor: '#5555ff',
-        paddingTop: 30,
-        paddingLeft: 10
+        paddingTop: (Dimensions.get('window').height*0.2) * 0.1,
+        paddingLeft: (Dimensions.get('window').width*0.9) * 0.01
     },
     viewConteudo:
     {
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
         height: (Dimensions.get('window').height*0.2) * 0.6,
         justifyContent: 'center',
         alignItems: "flex-start",
-        paddingLeft: 10,
+        paddingLeft: (Dimensions.get('window').width*0.9) * 0.01,
     },
     viewImgRigth:
     {
@@ -138,7 +138,21 @@ export const styles = StyleSheet.create({
     {
         alignSelf: 'center',
         width: Dimensions.get('window').width*0.95,
-        height: Dimensions.get('window').height*0.5,
+        height: Dimensions.get('window').height*0.65,
+        backgroundColor: 'white',
+        borderColor: '#5555ff',
+        borderStyle: 'solid',
+        borderRadius: 10,
+        borderWidth: 3,
+        marginTop: Dimensions.get('window').height*0.01,
+        paddingLeft: (Dimensions.get('window').width*0.95) * 0.03,
+        fontSize: 18
+    },
+    inputConteudoEditing:
+    {
+        alignSelf: 'center',
+        width: Dimensions.get('window').width*0.95,
+        height: Dimensions.get('window').height*0.38,
         backgroundColor: 'white',
         borderColor: '#5555ff',
         borderStyle: 'solid',

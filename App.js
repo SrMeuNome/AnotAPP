@@ -23,7 +23,7 @@ const App: () => React$Node = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName = "Home" >
+        <Stack.Navigator initialRouteName = "Home">
           <Stack.Screen name = "Home" component =  { Home } options = {{header: props => <TopBar {...props} />, animationEnabled: true, animationTypeForReplace: "push"}}/>
           <Stack.Screen name = "Anotation" component = { AnotationScreen } options = {{header: props => <TopBar {...props} />, animationEnabled: true, animationTypeForReplace: "push"}} />
           <Stack.Screen name = "Edition" component = { EdtiScreen } options = {{header: props => <TopBar {...props} />, animationEnabled: true, animationTypeForReplace: "push"}} />

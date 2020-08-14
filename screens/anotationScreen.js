@@ -1,29 +1,45 @@
 import 'react-native-gesture-handler';
-import React, { Component } from 'react'
-import { SafeAreaView, StatusBar, TextInput, Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { SafeAreaView, StatusBar, TextInput, Keyboard } from 'react-native'
 
 import {BtnSalve} from '../src/componentes.js'
 import {styles} from '../styles/styles.js'
 
 
-export class AnotationScreen extends Component
+export const AnotationScreen = (props) =>
 {
-    state = {
-        titulo: '',
-        conteudo: ''
+    let [titulo, setTitulo] = useState('')
+    let [conteudo, setConteudo] = useState('')
+    let [isKeybord, setIsKeybord] = useState(false)
+
+    useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', _show)
+        Keyboard.addListener('keyboardDidHide', _hiden)
+
+        return () => {
+            Keyboard.removeListener('keyboardDidShow', _show)
+            Keyboard.removeListener('keyboardDidHide', _hiden)
+        }
+    },[])
+
+    const _show = () =>
+    {
+        setIsKeybord(true)
     }
 
-    render()
+    const _hiden = () =>
     {
-        return(
-            <>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView style={styles.viewMain}>
-                    <TextInput onChangeText = {(text) => this.setState({titulo: text})} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
-                    <TextInput onChangeText = {(text) => this.setState({conteudo: text})} multiline = {true} style = {styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
-                    <BtnSalve {...this.props} titulo = {this.state.titulo} conteudo = {this.state.conteudo} />
-                </SafeAreaView>
-            </>
-        )
+        setIsKeybord(false)
     }
+
+    return(
+        <>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView style={styles.viewMain}>
+                <TextInput onChangeText = {(text) => setTitulo(text)} multiline = {false} style = {styles.inputTitulo} placeholder = 'Título' textAlignVertical = 'center'></TextInput>
+                <TextInput onChangeText = {(text) => setConteudo(text)} multiline = {true} style = {isKeybord? styles.inputConteudoEditing : styles.inputConteudo} placeholder = 'Conteúdo' textAlignVertical = 'top'></TextInput>
+                <BtnSalve {...props} titulo = {titulo} conteudo = {conteudo} />
+            </SafeAreaView>
+        </>
+    )
 }

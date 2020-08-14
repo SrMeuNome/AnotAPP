@@ -16,10 +16,10 @@ const database_name = "anotapp.db";
 //const database_size = 200000;
 
 //Tamanho maximo texto do titulo
-const maxLimitTitulo = 21
+const maxLimitTitulo = 19
 
 //Tamanho maximo texto do conteúdo
-const maxLimitConteudo = 35
+const maxLimitConteudo = 30
 
 //FlatList temos as seguintes propriedades:
 //item: retorna o objeto somente com o nome 'data' de uma posição do Array
