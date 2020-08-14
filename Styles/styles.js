@@ -147,13 +147,5 @@ export const styles = StyleSheet.create({
         marginTop: Dimensions.get('window').height*0.01,
         paddingLeft: (Dimensions.get('window').width*0.95) * 0.03,
         fontSize: 18
-    },
-    btnCancel:
-    {
-
-    },
-    btnConfirmar:
-    {
-        
     }
 })
