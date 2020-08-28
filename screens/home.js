@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView, View, StatusBar, Text } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { SafeAreaView, View, StatusBar, Animated, Dimensions } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
 
-import {styles} from '../styles/styles.js'
+import { styles } from '../styles/styles.js'
 
-import {BtnAnotation, BtnAdd} from '../src/componentes.js'
+import { BtnAnotation, BtnAdd, FilterBar } from '../src/componentes.js'
 
 import DataBase from '../db/controle.js'
 
@@ -30,50 +30,110 @@ var db = DataBase.CreateDB(database_name)
 
 DataBase.CreateTables(db)
 
-export const Home = (props) =>
-{
+export const Home = (props) => {
   let [data, setDATA] = useState([])
+  let [filter, setFilter] = useState('')
   //Executando select
-  
-  useEffect( () => 
-  {
-    db.transaction( (tx) => { tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) =>
-    {
+
+  useEffect(() => {
+    if (filter === '') {
+      db.transaction((tx) => {
+        tx.executeSql(`SELECT * FROM anotation;`, [], (tx, results) => {
           let len = results.rows.length
           let row = []
-          for (let i = 0; i < len; i++)
-          {
-              row.push(results.rows.item(i))
+          for (let i = 0; i < len; i++) {
+            row.push(results.rows.item(i))
           }
           setDATA(row)
           console.log('Query Complete!')
-      },
-      (err) => {
-          console.log("error: ",err);
-          //console.log("Error: "+ (err.message || err));
-          return false;
+        },
+          (err) => {
+            console.log("error: ", err);
+            //console.log("Error: "+ (err.message || err));
+            return false;
+          })
       })
-    })
+    }
+    else {
+      db.transaction((tx) => {
+        //SQL_Latin1_General_CP1_CI_AS = NÃO SENSITIVEL
+        //SQL_Latin1_General_CP1_CS_AS = SENSITIVEL
+        tx.executeSql(`SELECT * FROM anotation WHERE title_anotation COLLATE SQL_Latin1_General_CP1_CI_AS LIKE '%${filter}%' OR text_anotation COLLATE SQL_Latin1_General_CP1_CI_AS LIKE '%${filter}%';`, [], (tx, results) => {
+          let len = results.rows.length
+          let row = []
+          for (let i = 0; i < len; i++) {
+            row.push(results.rows.item(i))
+          }
+          setDATA(row)
+          console.log('Query Complete!')
+        },
+          (err) => {
+            console.log("error: ", err);
+            //console.log("Error: "+ (err.message || err));
+            return false;
+          })
+      })
+    }
   })
-      
 
-  return(
+  //Controle de animação
+  const position = useRef(new Animated.ValueXY()).current
+  const positionList = useRef(new Animated.ValueXY()).current
+  const sizeList = useRef(new Animated.ValueXY({ x: 1, y: 1 })).current
+  let [isSlid, setIsSlid] = useState(false)
+
+  //O scale é o unico que a comparação é de 0 a 1
+
+  //Função para fazer o slide do filtro
+  const slid = () => {
+    if (!isSlid) {
+      //slide filter
+      Animated.spring(position, { toValue: { x: (Dimensions.get('window').width * -0.85), y: 0 }, useNativeDriver: true }).start()
+
+      //move list
+      Animated.spring(positionList, { toValue: { x: 0, y: (Dimensions.get('window').height * 0.05) }, useNativeDriver: true }).start()
+
+      //scale list
+      Animated.spring(sizeList, { toValue: { x: 1, y: 0.9 }, useNativeDriver: true }).start()
+    }
+    else {
+      //slide filter
+      Animated.spring(position, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
+
+      //move list
+      Animated.spring(positionList, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
+
+      //scale list
+      Animated.spring(sizeList, { toValue: { x: 1, y: 1 }, useNativeDriver: true }).start()
+    }
+  }
+
+
+  //retorno para montar a tela
+  return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.viewMain}> 
-        <View style={styles.viewCentral}>
+      <SafeAreaView style={styles.viewMain}>
+        <Animated.View style={[styles.viewCentral, { transform: [{ translateX: positionList.x }, { translateY: positionList.y }, { scaleX: sizeList.x }, { scaleY: sizeList.y }] }]}>
           <FlatList
-            data = {data}
-            keyExtractor = {(item, index) => item['id_anotation'].toString()}
-            renderItem = {({item}) => <BtnAnotation {...props}
-                                      title = {item['title_anotation'].length > maxLimitTitulo ? (item['title_anotation']).substring(0,maxLimitTitulo-3) + '...' : item['title_anotation']}
-                                      text = {item['text_anotation'].length > maxLimitConteudo ? (item['text_anotation']).substring(0,maxLimitConteudo-3) + '...' : item['text_anotation']}
-                                      titleComplete = {item['title_anotation']}
-                                      conteudoComplete = {item['text_anotation']}
-                                      idConteudo = {item['id_anotation']} />}
-          />  
-        </View>
-        <BtnAdd {...props}/>
+            style={styles.list}
+            data={data}
+            keyExtractor={(item, index) => item['id_anotation'].toString()}
+            renderItem={({ item }) => <BtnAnotation {...props}
+              title={item['title_anotation'].length > maxLimitTitulo ? (item['title_anotation']).substring(0, maxLimitTitulo - 3) + '...' : item['title_anotation']}
+              text={item['text_anotation'].length > maxLimitConteudo ? (item['text_anotation']).substring(0, maxLimitConteudo - 3) + '...' : item['text_anotation']}
+              titleComplete={item['title_anotation']}
+              conteudoComplete={item['text_anotation']}
+              idConteudo={item['id_anotation']} />}
+          />
+        </Animated.View>
+        <Animated.View style={[styles.viewFilterAnim, { transform: [{ translateX: position.x }, { translateY: position.y }] }]}>
+          <FilterBar callback={(text) => setFilter(text)} callbackPress={() => {
+            isSlid ? setIsSlid(false) : setIsSlid(true)
+            slid()
+          }} />
+        </Animated.View>
+        <BtnAdd {...props} />
       </SafeAreaView>
     </>
   )
