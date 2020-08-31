@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect, useRef } from 'react'
-import { SafeAreaView, View, StatusBar, Animated, Dimensions } from 'react-native'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { SafeAreaView, StatusBar, Animated, Dimensions } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native'
 
-import { styles } from '../styles/styles.js'
+import { getStyle } from '../styles/styles.js'
 
 import { BtnAnotation, BtnAdd, FilterBar } from '../src/componentes.js'
 
@@ -33,6 +34,12 @@ DataBase.CreateTables(db)
 export const Home = (props) => {
   let [data, setDATA] = useState([])
   let [filter, setFilter] = useState('')
+  let [styles, setStyles] = useState(getStyle())
+
+  //propriedade se está focando na tela ou não
+  const isFocused = useIsFocused()
+
+  //let [styles, setStyles] = useState(styles)
   //Executando select
 
   useEffect(() => {
@@ -74,7 +81,7 @@ export const Home = (props) => {
           })
       })
     }
-  })
+  }, [isFocused, filter])
 
   //Controle de animação
   const position = useRef(new Animated.ValueXY()).current
@@ -108,12 +115,37 @@ export const Home = (props) => {
     }
   }
 
+  const droopSlid = () => {
+    if (!isSlid) {
+      //slide filter
+      Animated.spring(position, { toValue: { x: (Dimensions.get('window').width * -0.85), y: 0 }, useNativeDriver: true }).start()
+
+      //move list
+      Animated.spring(positionList, { toValue: { x: 0, y: (Dimensions.get('window').height * 0.05) }, useNativeDriver: true }).start()
+
+      //scale list
+      Animated.spring(sizeList, { toValue: { x: 1, y: 0.9 }, useNativeDriver: true }).start()
+    }
+    else {
+      //slide filter
+      Animated.spring(position, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
+
+      //move list
+      Animated.spring(positionList, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
+
+      //scale list
+      Animated.spring(sizeList, { toValue: { x: 1, y: 1 }, useNativeDriver: true }).start()
+    }
+  }
+
 
   //retorno para montar a tela
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.viewMain}>
+      <SafeAreaView style={styles.viewMain} onLayout={(e) => {
+        setStyles(getStyle())
+      }}>
         <Animated.View style={[styles.viewCentral, { transform: [{ translateX: positionList.x }, { translateY: positionList.y }, { scaleX: sizeList.x }, { scaleY: sizeList.y }] }]}>
           <FlatList
             style={styles.list}

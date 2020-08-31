@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { Text, View, TouchableOpacity, Image, TextInput, Alert } from 'react-native'
 
-import { styles } from '../styles/styles.js'
+import { getStyle } from '../styles/styles.js'
 
 import DataBase from '../db/controle.js'
 
 
 export function BtnAnotation(props) {
+    let [styles, setStyles] = useState(getStyle())
     return (
-        <TouchableOpacity style={styles.viewBotao} onPress={() => { Edit(props.titleComplete, props.conteudoComplete, props.idConteudo, props.navigation) }}>
+        <TouchableOpacity onLayout={(e) => {
+            setStyles(getStyle())
+        }} style={styles.viewBotao} onPress={() => { Edit(props.titleComplete, props.conteudoComplete, props.idConteudo, props.navigation) }}>
             <View style={styles.viewTitulo}>
                 <Text numberOfLines={1} style={styles.txtTitulo}>{props.title}</Text>
             </View>
@@ -20,40 +23,56 @@ export function BtnAnotation(props) {
 }
 
 export function TopBar(props) {
+    let [styles, setStyles] = useState(getStyle())
     return (
-        <View style={styles.viewBarrasuperior}>
+        <View onLayout={(e) => {
+            setStyles(getStyle())
+        }} style={styles.viewBarrasuperior}>
             <Text style={styles.textTituloApp}>ANOTAPP</Text>
         </View>
     )
 }
 
 export function BtnAdd(props) {
+    let [styles, setStyles] = useState(getStyle())
     return (
-        <TouchableOpacity onPress={() => props.navigation.push('Anotation')} style={styles.viewImgRigth}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
+        <TouchableOpacity onLayout={(e) => {
+            setStyles(getStyle())
+        }} onPress={() => props.navigation.push('Anotation')} style={styles.viewImgRigth}><Image style={styles.imgPlus} source={require('../img/plus.png')} /></TouchableOpacity>
     )
 }
 
 export function BtnSalve(props) {
+    let [styles, setStyles] = useState(getStyle())
     return (
-        <TouchableOpacity style={styles.viewImgRigth} onPress={() => Salve(props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+        <TouchableOpacity onLayout={(e) => {
+            setStyles(getStyle())
+        }} style={styles.viewImgRigth} onPress={() => Salve(props.titulo, props.conteudo, props.navigation)}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
     )
 }
 
 export function BtnUpdate(props) {
+    let [styles, setStyles] = useState(getStyle())
     let [isEdit, setIsEdit] = useState(false)
 
     if (isEdit) {
         return (
             <>
-                <TouchableOpacity style={styles.viewImgRigth} onPress={() => { Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false) }}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
-                <TouchableOpacity style={styles.viewImgLeft} onPress={() => { Delete(props.idUp, props.navigation, (editable) => props.callback(editable)); setIsEdit(false) }}><Image style={styles.imgDelete} source={require('../img/delete.png')} /></TouchableOpacity>
+                <TouchableOpacity onLayout={(e) => {
+                    setStyles(getStyle())
+                }} style={styles.viewImgRigth} onPress={() => { Update(props.idUp, props.tituloUp, props.conteudoUp, props.navigation); setIsEdit(false) }}><Image style={styles.imgSave} source={require('../img/save.png')} /></TouchableOpacity>
+                <TouchableOpacity onLayout={(e) => {
+                    setStyles(getStyle())
+                }} style={styles.viewImgLeft} onPress={() => { Delete(props.idUp, props.navigation, (editable) => props.callback(editable)); setIsEdit(false) }}><Image style={styles.imgDelete} source={require('../img/delete.png')} /></TouchableOpacity>
             </>
         )
     }
     else {
         return (
             <>
-                <TouchableOpacity style={styles.viewImgRigth} onPress={() => {
+                <TouchableOpacity onLayout={(e) => {
+                    setStyles(getStyle())
+                }} style={styles.viewImgRigth} onPress={() => {
                     setIsEdit(true)
                     props.callback(true) //callback(isEdit)
                 }}><Image style={styles.imgEdit} source={require('../img/edit.png')} />
@@ -65,10 +84,13 @@ export function BtnUpdate(props) {
 }
 
 export function FilterBar(props) {
+    let [styles, setStyles] = useState(getStyle())
     let [isEnable, setIsEnable] = useState(false)
     return (
         <>
-            <View style={styles.viewFilter}>
+            <View onLayout={(e) => {
+                setStyles(getStyle())
+            }} style={styles.viewFilter}>
                 <TouchableOpacity onPress={() => {
                     isEnable ? setIsEnable(false) : setIsEnable(true)
                     props.callbackPress()
