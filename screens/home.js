@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { SafeAreaView, StatusBar, Animated, Dimensions } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { SafeAreaView, StatusBar, Animated, Dimensions, useWindowDimensions, Text } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native'
 
-import { getStyle } from '../styles/styles.js'
+import { styles } from '../styles/styles.js'
 
 import { BtnAnotation, BtnAdd, FilterBar } from '../src/componentes.js'
 
@@ -34,7 +34,6 @@ DataBase.CreateTables(db)
 export const Home = (props) => {
   let [data, setDATA] = useState([])
   let [filter, setFilter] = useState('')
-  let [styles, setStyles] = useState(getStyle())
 
   //propriedade se está focando na tela ou não
   const isFocused = useIsFocused()
@@ -95,33 +94,10 @@ export const Home = (props) => {
   const slid = () => {
     if (!isSlid) {
       //slide filter
-      Animated.spring(position, { toValue: { x: (Dimensions.get('window').width * -0.85), y: 0 }, useNativeDriver: true }).start()
+      Animated.spring(position, { toValue: { x: (Dimensions.get('window').width * (Dimensions.get('window').width > 550 ? -0.71 : -0.85)), y: 0 }, useNativeDriver: true }).start()
 
       //move list
-      Animated.spring(positionList, { toValue: { x: 0, y: (Dimensions.get('window').height * 0.05) }, useNativeDriver: true }).start()
-
-      //scale list
-      Animated.spring(sizeList, { toValue: { x: 1, y: 0.9 }, useNativeDriver: true }).start()
-    }
-    else {
-      //slide filter
-      Animated.spring(position, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
-
-      //move list
-      Animated.spring(positionList, { toValue: { x: 0, y: 0 }, useNativeDriver: true }).start()
-
-      //scale list
-      Animated.spring(sizeList, { toValue: { x: 1, y: 1 }, useNativeDriver: true }).start()
-    }
-  }
-
-  const droopSlid = () => {
-    if (!isSlid) {
-      //slide filter
-      Animated.spring(position, { toValue: { x: (Dimensions.get('window').width * -0.85), y: 0 }, useNativeDriver: true }).start()
-
-      //move list
-      Animated.spring(positionList, { toValue: { x: 0, y: (Dimensions.get('window').height * 0.05) }, useNativeDriver: true }).start()
+      Animated.spring(positionList, { toValue: { x: 0, y: (Dimensions.get('window').height * (Dimensions.get('window').width > 550 ? 0.1 : 0.05)) }, useNativeDriver: true }).start()
 
       //scale list
       Animated.spring(sizeList, { toValue: { x: 1, y: 0.9 }, useNativeDriver: true }).start()
@@ -143,12 +119,10 @@ export const Home = (props) => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.viewMain} onLayout={(e) => {
-        setStyles(getStyle())
-      }}>
+      <SafeAreaView style={[styles.viewMain]}>
         <Animated.View style={[styles.viewCentral, { transform: [{ translateX: positionList.x }, { translateY: positionList.y }, { scaleX: sizeList.x }, { scaleY: sizeList.y }] }]}>
           <FlatList
-            style={styles.list}
+            style={{ width: useWindowDimensions().width }}
             data={data}
             keyExtractor={(item, index) => item['id_anotation'].toString()}
             renderItem={({ item }) => <BtnAnotation {...props}
@@ -159,7 +133,12 @@ export const Home = (props) => {
               idConteudo={item['id_anotation']} />}
           />
         </Animated.View>
-        <Animated.View style={[styles.viewFilterAnim, { transform: [{ translateX: position.x }, { translateY: position.y }] }]}>
+
+        <Animated.View style={[styles.viewFilterAnim, {
+          top: (useWindowDimensions().height * 0.95) * 0.01,
+          left: useWindowDimensions().width * (useWindowDimensions().width > 500 ? 0.94 : 0.9),
+          transform: [{ translateX: position.x }, { translateY: position.y }]
+        }]}>
           <FilterBar callback={(text) => setFilter(text)} callbackPress={() => {
             isSlid ? setIsSlid(false) : setIsSlid(true)
             slid()
